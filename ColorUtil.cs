@@ -1,13 +1,12 @@
 ﻿using Kitchen;
 using System;
-using Unity.Entities;
 using UnityEngine;
 
 namespace ColorSelector {
 
     public class ColorUtil {
 
-        public static void setColorFromHexCode(TextInputView.TextInputState result, string code, PlayerManager playerManager, Entity playerEntity, CPlayerColour playerColour) {
+        public static void setColorFromHexCode(TextInputView.TextInputState result, string code, int playerId) {
             if (code.StartsWith("#")) {
                 code = code.Substring(1);
             }
@@ -17,9 +16,14 @@ namespace ColorSelector {
                 byte red = (byte)((rgb >> 16) & 255);
                 byte green = (byte)((rgb >> 8) & 255);
                 byte blue = (byte)(rgb & 255);
-                playerColour.Color = new Color32(red, green, blue, 1);
-                playerManager.EntityManager.SetComponentData(playerEntity, playerColour);
+                setColorOnPlayersProfile(playerId, new Color32(red, green, blue, 1));
             }
+        }
+
+        public static void setColorOnPlayersProfile(int playerId, Color newColor) {
+            PlayerProfile playerProfile = Players.Main.Get(playerId).Profile;
+            playerProfile.Colour = newColor;
+            Players.Main.RequestProfileUpdate(playerId, playerProfile);
         }
     }
 }

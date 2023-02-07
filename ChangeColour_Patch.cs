@@ -1,8 +1,6 @@
 ﻿using HarmonyLib;
 using Kitchen;
 using System;
-using Unity.Entities;
-using UnityEngine;
 
 namespace ColorSelector {
 
@@ -13,19 +11,12 @@ namespace ColorSelector {
             if (ColorPreferences.getColorApplianceAction == ColorPreferences.APPLIANCE_NORMAL) {
                 return true;
             }
+            
+            var playerId = data.Context.Get<CPlayer>(data.Interactor).ID;
 
-            var player_id = data.Context.Get<CPlayer>(data.Interactor).ID;
-
-            PlayerManager playerManager = World.DefaultGameObjectInjectionWorld.GetExistingSystem<PlayerManager>();
-            if (playerManager == null) {
-                return true;
-            }
-
-            TextInputView.RequestTextInput("Hex code", "", 20, new Action<TextInputView.TextInputState, string>(delegate (TextInputView.TextInputState result, string code) {
+            TextInputView.RequestTextInput("Hex code", "", 7, new Action<TextInputView.TextInputState, string>(delegate (TextInputView.TextInputState result, string code) {
                 if (result == TextInputView.TextInputState.TextEntryComplete) {
-                    playerManager.GetPlayer(player_id, out Player player, false);
-                    CPlayerColour playerColour = playerManager.EntityManager.GetComponentData<CPlayerColour>(player.Entity);
-                    ColorUtil.setColorFromHexCode(result, code, playerManager, player.Entity, playerColour);
+                    ColorUtil.setColorFromHexCode(result, code, playerId);
                 }
             }));
 

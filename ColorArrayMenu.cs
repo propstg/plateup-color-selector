@@ -2,7 +2,6 @@
 using Kitchen;
 using Kitchen.Modules;
 using KitchenLib;
-using Unity.Entities;
 using UnityEngine;
 using TMPro;
 
@@ -13,28 +12,23 @@ namespace ColorSelector {
         public ColorArrayMenu(Transform container, ModuleList module_list) : base(container, module_list) { }
 
         public override void Setup(int player_id) {
-            PlayerManager pm = World.DefaultGameObjectInjectionWorld.GetExistingSystem<PlayerManager>();
-            pm.GetPlayer(player_id, out Player player, false);
-            CPlayerColour playerColour = pm.EntityManager.GetComponentData<CPlayerColour>(player.Entity);
-
-            Color color = new Color(0.4687494f, 0.75f, 0.1875f);
+            Color color = new Color(0, 0.75f, 0.75f);
             for (int i = 0; i < 20; i++) {
                 Color.RGBToHSV(color, out float H, out float S, out float V);
                 color = Color.HSVToRGB(H + 0.05f, S, V);
-                float x = i < 10 ? 0.5f * (i - 4) : 0.5f * (i - 14);
+                float x = i < 10 ? 0.5f * (i - 4.5f) : 0.5f * (i - 14.5f);
                 float y = i < 10 ? 1f : 1.5f;
-                AddColorButton(color, new Vector2(x, y), pm, player.Entity, playerColour);
+                AddColorButton(player_id, color, new Vector2(x, y));
             }
 
             AddButton(Localisation["MENU_BACK_SETTINGS"], delegate { RequestPreviousMenu(); });
         }
 
-        private ButtonElement AddColorButton(Color color, Vector2 position, PlayerManager playerManager, Entity playerEntity, CPlayerColour playerColour) {
+        private ButtonElement AddColorButton(int playerId, Color color, Vector2 position) {
             ButtonElement buttonElement = ModuleDirectory.Add<ButtonElement>(Container, position);
             buttonElement.SetLabel("■");
             buttonElement.OnActivate += delegate {
-                playerColour.Color = color;
-                playerManager.EntityManager.SetComponentData(playerEntity, playerColour);
+                ColorUtil.setColorOnPlayersProfile(playerId, color);
             };
             buttonElement.SetSize(0.5f, 0.5f);
             ModuleList.AddModule(buttonElement, position);

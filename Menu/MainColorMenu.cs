@@ -4,7 +4,7 @@ using KitchenLib;
 using System;
 using UnityEngine;
 
-namespace ColorSelector {
+namespace ColorSelector.Menu {
 
     public class MainColorMenu<T> : KLMenu<T> {
 
@@ -12,7 +12,8 @@ namespace ColorSelector {
 
         public override void Setup(int player_id) {
             addHexCodeButton(player_id);
-            AddSubmenuButton("Choose from built in colors", typeof(ColorArrayMenu<T>));
+            AddSubmenuButton("Choose from recent hex codes", typeof(RecentHexCodesPalleteMenu<T>));
+            AddSubmenuButton("Choose from built in colors", typeof(BuiltInColorPalleteMenu<T>));
 
             AddButton(Localisation["MENU_BACK_SETTINGS"], delegate { RequestPreviousMenu(); });
         }

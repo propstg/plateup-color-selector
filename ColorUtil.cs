@@ -1,4 +1,5 @@
-﻿using Kitchen;
+﻿using ColorSelector.Prefs;
+using Kitchen;
 using System;
 using UnityEngine;
 
@@ -12,12 +13,17 @@ namespace ColorSelector {
             }
 
             if (result == TextInputView.TextInputState.TextEntryComplete) {
-                int rgb = Convert.ToInt32(code, 16);
-                byte red = (byte)((rgb >> 16) & 255);
-                byte green = (byte)((rgb >> 8) & 255);
-                byte blue = (byte)(rgb & 255);
-                setColorOnPlayersProfile(playerId, new Color32(red, green, blue, 1));
+                setColorOnPlayersProfile(playerId, getColorFromHexCode(code));
+                ColorPreferences.addHexCodeToRecentHexCodes(code);
             }
+        }
+
+        public static Color32 getColorFromHexCode(string code) {
+            int rgb = Convert.ToInt32(code, 16);
+            byte red = (byte)((rgb >> 16) & 255);
+            byte green = (byte)((rgb >> 8) & 255);
+            byte blue = (byte)(rgb & 255);
+            return new Color32(red, green, blue, 255);
         }
 
         public static void setColorOnPlayersProfile(int playerId, Color newColor) {

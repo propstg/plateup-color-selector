@@ -27,9 +27,7 @@ namespace ColorSelector {
         }
 
         public static void setColorOnPlayersProfile(int playerId, Color newColor) {
-            PlayerProfile playerProfile = Players.Main.Get(playerId).Profile;
-            playerProfile.Colour = newColor;
-            Players.Main.RequestProfileUpdate(playerId, playerProfile);
+            ProfileAccessor.SetColour(playerId, newColor);
         }
     }
 }

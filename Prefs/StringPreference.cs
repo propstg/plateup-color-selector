@@ -19,5 +19,13 @@ namespace ColorSelector.Prefs {
                 Value = Default;
             }
         }
+
+        public override string SaveAsString() {
+            return Value;
+        }
+
+        public override void LoadFromString(string value) {
+            Value = value;
+        }
     }
 }

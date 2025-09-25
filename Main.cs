@@ -12,7 +12,7 @@ namespace ColorSelector {
         public const string MOD_ID = "blargle.ColorSelector";
         public const string MOD_NAME = "Color Selector";
         public const string MOD_AUTHOR = "blargle";
-        public const string MOD_VERSION = "0.0.4";
+        public const string MOD_VERSION = "0.0.5";
 
         public ColorSelectorMod() : base(MOD_ID, MOD_NAME, MOD_AUTHOR, MOD_VERSION, ">=1.2.0", Assembly.GetExecutingAssembly()) { }
 
